@@ -13,6 +13,7 @@ import android.os.Handler
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
@@ -30,7 +31,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.start_worker).setOnClickListener {
             WorkManager.getInstance(this)
-                .enqueue(
+                .enqueueUniqueWork(
+                    "unique_test",
+                    ExistingWorkPolicy.REPLACE,
                     OneTimeWorkRequestBuilder<OurBackgroundWork>()
                         .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                         .build()
